@@ -1,0 +1,11 @@
+.AppPage2{
+    display:flex;
+    flex-direction: column;
+
+}
+
+.SyncBtn{
+    width: 5em;
+    height:3em;
+    align-self: center;
+}

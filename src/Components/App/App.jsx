@@ -5,7 +5,7 @@ import Footer from '../Footer/Footer';
 import NoteDeck from '../NoteDeck/NoteDeck';
 import './App.css';
 import { connect } from 'react-redux';
-import {onClickEditReducer,onFooterClick} from '../../redux/Actions/index'
+import {onClickEditReducer,onFooterClick,onSync} from '../../redux/Actions/index'
 
 
 class App extends React.Component {
@@ -110,8 +110,10 @@ class App extends React.Component {
       );
     }
     return (
-      <div className="App">
+      <div className="AppPage2">
         <Header textHeader="Saved Notes" />
+
+        <button className="SyncBtn" onClick={()=>this.props.onSync()}>Sync</button>
         <ol className="Body2">{noteList}</ol>
         <Footer textFooter="Create new note" 
         onFooterClick={() => this.onFooterClick()} 
@@ -129,6 +131,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatcherToProps = dispatch => ({
+  onSync:()=>dispatch(onSync()),
   onClickEditHere: key => dispatch(onClickEditReducer(key)),
   onFooterClickHere: () => dispatch(onFooterClick()),
 });

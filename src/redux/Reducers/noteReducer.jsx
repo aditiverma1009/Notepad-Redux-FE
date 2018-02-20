@@ -1,6 +1,10 @@
+const axios = require('axios');
+
 const onFooterClick = 'ON_FOOTER_CLICK';
 const onClickEditReducer = 'ON_CLICK_EDIT_REDUCER';
 const onSaveEventReducer = 'ON_SAVE_EVENT_REDUCER';
+const setData = 'SET_DATA';
+
 
 const defaultValue = {
   history: [],
@@ -42,6 +46,23 @@ const noteReducer = (prevState = defaultValue, action) => {
         edit: false,
       };
     }
+
+    case setData: {
+      const historyData = prevState.history;
+
+      // Send a POST request
+      axios({
+        method: 'post',
+        url: '/setData',
+        data: historyData,
+
+      });
+      return {
+        ...prevState,
+      };
+    }
+
+
     default: {
       return prevState;
     }

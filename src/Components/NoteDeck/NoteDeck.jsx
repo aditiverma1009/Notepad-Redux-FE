@@ -22,7 +22,7 @@ const NoteDeck = props => (
 
 NoteDeck.propTypes = {
   onClickEdit: PropTypes.func.isRequired,
-  indexSent: PropTypes.string.isRequired,
+  indexSent: PropTypes.number.isRequired,
   noteDeckT: PropTypes.string.isRequired,
   noteDeckN: PropTypes.string.isRequired,
 };
