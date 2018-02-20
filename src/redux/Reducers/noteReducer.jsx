@@ -24,12 +24,11 @@ const noteReducer = (prevState = defaultValue, action) => {
 
     case onClickEditReducer: {
       const key = action.payload;
-      const pageNow = prevState.page;
       return {
         ...prevState,
-        noteId: key,
+        noteid: key,
         edit: true,
-        page: !(pageNow),
+        page: false,
       };
     }
 
@@ -50,38 +49,3 @@ const noteReducer = (prevState = defaultValue, action) => {
 };
 export default noteReducer;
 
-
-/*
-onSaveEvent = () => {
-  if (this.state.edit === false) {
-    const { noteTitle } = this.state;
-    const { noteContent } = this.state;
-    const noteid = Date.now();
-    const history = this.state.history.slice();
-
-    this.setState({
-      history: history.concat([
-        {
-          valueNote: noteContent,
-          valueNoteTitle: noteTitle,
-          noteid,
-        }]),
-      page: !(this.state.page),
-    });
-  } else if (this.state.edit === true) {
-    const history = this.state.history.slice();
-    const noteIdRe = this.state.noteId;
-    history.map((step, index) => {
-      if (step.noteid === noteIdRe) {
-        history[index].valueNote = this.state.noteContent;
-        history[index].valueNoteTitle = this.state.noteTitle;
-        this.setState({
-          history: history.slice(),
-          page: !(this.state.page),
-        });
-      }
-      return true;
-    });
-  }
-};
-*/
