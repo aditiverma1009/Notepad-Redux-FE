@@ -4,18 +4,22 @@ import Save from '../Save/Save';
 import Counter from '../Counter/Counter';
 import './Body-Footer.css';
 
-class BodyFooter extends React.Component {
-  render() {
-    return (
-      <div className="BodyFooter">
-        <Save textSave={this.props.textSave} onSaveEvent={() => this.props.onSaveEvent()} />
-        <Counter textCounter={this.props.textCounter} />
-      </div>
-    );
-  }
-}
+const BodyFooter = props => (
+  <div className="BodyFooter">
+    <Save
+      textSave={props.textSave}
+      onSaveEvent={() => props.onSaveEvent()}
+      valueNote={props.valueNote}
+      valueNoteTitle={props.valueNoteTitle}
+    />
+    <Counter textCounter={props.textCounter} />
+  </div>
+);
+
 
 BodyFooter.propTypes = {
+  valueNote: PropTypes.string.isRequired,
+  valueNoteTitle: PropTypes.string.isRequired,
   textSave: PropTypes.string.isRequired,
   textCounter: PropTypes.number.isRequired,
   onSaveEvent: PropTypes.func.isRequired,

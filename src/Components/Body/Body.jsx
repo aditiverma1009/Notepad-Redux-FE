@@ -14,12 +14,14 @@ const Body = props => (
     <BodyMid
       textNoteHeading={props.textNoteHeading}
       onChangeNoteTitle={event => props.onChangeNoteTitle(event)}
-      valueNoteTitle={props.valueNoteTitle}
       onChangeNote={event => props.onChangeNote(event)}
+      valueNoteTitle={props.valueNoteTitle}
       valueNote={props.valueNote}
       alertBool={props.alertBool}
     />
     <BodyFooter
+      valueNote={props.valueNote}
+      valueNoteTitle={props.valueNoteTitle}
       textSave={props.textSave}
       onSaveEvent={() => props.onSaveEvent()}
       textCounter={props.textCounter}

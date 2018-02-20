@@ -4,6 +4,8 @@ import Body from '../Body/Body';
 import Footer from '../Footer/Footer';
 import NoteDeck from '../NoteDeck/NoteDeck';
 import './App.css';
+import { connect } from 'react-redux';
+import {onClickEditReducer,onFooterClick} from '../../redux/Actions/index'
 
 
 class App extends React.Component {
@@ -14,17 +16,11 @@ class App extends React.Component {
       leftChar: 10,
       noteTitle: '',
       noteContent: '',
-      history: [],
-      page: false,
-      edit: false,
-      noteId: 0,
     };
   }
 
   onChangeNote = (event) => {
     let alertBoolnew = false;
-    // const history = this.state.history.slice();
-    // const current = this.state.history.slice(history.length - 1);
     let valueNotenew = event.target.value;
     const totalChar = valueNotenew.length;
     let leftChar = 10 - totalChar;
@@ -40,31 +36,26 @@ class App extends React.Component {
     });
   }
 
-  onFooterClick=() => {
-    this.setState({
-      page: !(this.state.page),
-      noteTitle: '',
-      noteContent: '',
-      edit: false,
-    });
-  }
-
   onChangeNoteTitle = (event) => {
     const newvalueNoteTitle = event.target.value;
-    // const history = this.state.history.slice();
     this.setState({
       noteTitle: newvalueNoteTitle,
     });
   }
 
-  onClickEdit=(key) => {
+  onFooterClick=()=> {
+    const noteTitle='';
+    const noteContent='';
     this.setState({
-      noteId: key,
-      edit: true,
-      page: !this.state.page,
+      noteTitle,
+      noteContent,
     });
-    const history = this.state.history.slice();
-    history.map((step, index) => {
+    this.props.onFooterClickHere();
+    }  
+  
+  onClickEdit = (key) => {
+    const history = this.props.history.slice();
+    history.map((step) => {
       let noteContent = '';
       let noteTitle = '';
       if (key === step.noteid) {
@@ -75,59 +66,27 @@ class App extends React.Component {
         noteContent,
         noteTitle,
       });
+      this.props.onClickEditHere(key);
       return true;
     });
   }
 
-
-  onSaveEvent = () => {
-    if (this.state.edit === false) {
-      const { noteTitle } = this.state;
-      const { noteContent } = this.state;
-      const noteid = Date.now();
-      const history = this.state.history.slice();
-
-      this.setState({
-        history: history.concat([
-          {
-            valueNote: noteContent,
-            valueNoteTitle: noteTitle,
-            noteid,
-          }]),
-        page: !(this.state.page),
-      });
-    } else if (this.state.edit === true) {
-      const history = this.state.history.slice();
-      const noteIdRe = this.state.noteId;
-      history.map((step, index) => {
-        if (step.noteid === noteIdRe) {
-          history[index].valueNote = this.state.noteContent;
-          history[index].valueNoteTitle = this.state.noteTitle;
-          this.setState({
-            history: history.slice(),
-            page: !(this.state.page),
-          });
-        }
-        return true;
-      });
-    }
-  }
-
+  
 
   render() {
-    // const history = this.state.history.slice();
-    const noteList = this.state.history.map((step, index) => (
+    const history = this.props.history.slice();
+    const noteList = history.map((step, index) => (
       <li>
         <NoteDeck
-          noteDeckT={this.state.history[index].valueNoteTitle}
-          noteDeckN={this.state.history[index].valueNote}
-          indexSent={this.state.history[index].noteid}
+          noteDeckT={history[index].valueNoteTitle}
+          noteDeckN={history[index].valueNote}
+          indexSent={history[index].noteid}
           onClickEdit={i => this.onClickEdit(i)}
         />
       </li>
     ));
 
-    if (this.state.page === false) {
+    if (this.props.page === false) {
       return (
         <div className="App">
           <Header textHeader="Start taking Note" />
@@ -138,13 +97,15 @@ class App extends React.Component {
             textSave="Save"
             onChangeNote={event => this.onChangeNote(event)}
             onChangeNoteTitle={event => this.onChangeNoteTitle(event)}
-            valueNoteTitle={this.state.noteTitle}
             alertBool={this.state.alertBool}
             textCounter={this.state.leftChar}
+            valueNoteTitle={this.state.noteTitle}
             valueNote={this.state.noteContent}
             onSaveEvent={() => this.onSaveEvent()}
           />
-          <Footer textFooter="View Saved Notes" onFooterClick={() => this.onFooterClick()} />
+          <Footer textFooter="View Saved Notes" 
+          onFooterClick={this.props.onFooterClickHere} 
+          />
         </div>
       );
     }
@@ -152,10 +113,25 @@ class App extends React.Component {
       <div className="App">
         <Header textHeader="Saved Notes" />
         <ol className="Body2">{noteList}</ol>
-        <Footer textFooter="Create new note" onFooterClick={() => this.onFooterClick()} />
+        <Footer textFooter="Create new note" 
+        onFooterClick={() => this.onFooterClick()} 
+        />
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  history: state.noteReducer.history,
+  page: state.noteReducer.page,
+  edit: state.noteReducer.edit,
+  noteid: state.noteReducer.noteid,
+});
+
+const mapDispatcherToProps = dispatch => ({
+  onClickEditHere: key => dispatch(onClickEditReducer(key)),
+  onFooterClickHere: () => dispatch(onFooterClick()),
+});
+export default connect(mapStateToProps, mapDispatcherToProps)(App);
+
+
