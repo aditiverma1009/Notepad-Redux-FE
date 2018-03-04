@@ -4,7 +4,7 @@ const onFooterClick = 'ON_FOOTER_CLICK';
 const onClickEditReducer = 'ON_CLICK_EDIT_REDUCER';
 const onSaveEventReducer = 'ON_SAVE_EVENT_REDUCER';
 const setData = 'SET_DATA';
-
+const onGetData = 'GET_DATA';
 
 const defaultValue = {
   history: [],
@@ -48,20 +48,32 @@ const noteReducer = (prevState = defaultValue, action) => {
     }
 
     case setData: {
+      console.log(prevState.history);
       const historyData = prevState.history;
-
-      // Send a POST request
+      console.log('on sync in set data');
+      console.log(historyData);
       axios({
         method: 'post',
         url: '/setData',
         data: historyData,
-
+      }).then((resp) => {
+        console.log(resp);
       });
       return {
         ...prevState,
       };
     }
 
+    case onGetData: {
+      const historyArr = action.payload;
+      const historyArr2 = historyArr.data;
+      console.log('In on get data - history ->', historyArr2);
+      return {
+        ...prevState,
+        history: historyArr2,
+        noteid: 0,
+      };
+    }
 
     default: {
       return prevState;

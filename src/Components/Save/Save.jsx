@@ -4,38 +4,53 @@ import React from 'react';
 import './Save.css';
 import { onSaveEventReducer } from '../../redux/Actions/index';
 
-const onSaveEvent = (valueNote, valueNoteTitle, props) => {
-  let newhist = props.history.slice();
-  const { edit } = props;
-  let { noteid } = props;
-  if (edit === false) {
-    noteid = Date.now();
-    newhist = newhist.concat([{
-      valueNote,
-      valueNoteTitle,
-      noteid,
-    }]);
-  } else if (edit === true) {
-    newhist.map((step, index) => {
-      if (step.noteid === noteid) {
-        newhist[index].valueNote = valueNote;
-        newhist[index].valueNoteTitle = valueNoteTitle;
-      }
-      return true;
-    });
+
+class Save extends React.Component {
+
+  onSaveEventHere = (valueNoteTitle,valueNote) => {
+    let newhist = this.props.history;
+    console.log(valueNote);
+    console.log(valueNoteTitle);
+    console.log(newhist);
+    const { edit } = this.props;
+    let { noteid } = this.props;
+    console.log(edit);
+    console.log(noteid);
+    if (edit === false) {
+      noteid = Date.now().toString();
+      newhist = newhist.concat([{
+        noteid,
+        notecontent:valueNote,
+        notetitle:valueNoteTitle,
+       
+      }]);
+      console.log(newhist);
+    } else if (edit === true) {
+      console.log("in edit"+this.props.noteid);
+      newhist.map((step, index) => {
+        if (step.noteid === noteid) {
+          newhist[index].noteid=noteid;
+          newhist[index].notecontent = valueNote;
+          newhist[index].notetitle = valueNoteTitle;
+        }
+        return true;
+      });
+    }
+    console.log(`${newhist}`);
+    this.props.onSaveEvent(newhist);
+  };
+
+  render() {
+    return (
+      <button
+        className="Save"
+        onClick={() => this.onSaveEventHere(this.props.valueNoteTitle,this.props.valueNote)}
+      >
+        {this.props.textSave}
+      </button>
+    );
   }
-  props.onSaveEventHere(newhist);
-};
-
-
-const Save = props => (
-  <button
-    className="Save"
-    onClick={() => onSaveEvent(props.valueNote, props.valueNoteTitle, props)}
-  >
-    {props.textSave}
-  </button>
-);
+}
 
 
 const mapStateToProps = state => ({
@@ -45,7 +60,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatcherToProps = dispatch => ({
-  onSaveEventHere: history => dispatch(onSaveEventReducer(history)),
+  onSaveEvent: history => dispatch(onSaveEventReducer(history)),
 });
 
 Save.propTypes = {

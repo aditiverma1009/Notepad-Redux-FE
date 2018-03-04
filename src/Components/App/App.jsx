@@ -4,8 +4,9 @@ import Body from '../Body/Body';
 import Footer from '../Footer/Footer';
 import NoteDeck from '../NoteDeck/NoteDeck';
 import './App.css';
+import axios from 'axios';
 import { connect } from 'react-redux';
-import {onClickEditReducer,onFooterClick,onSync} from '../../redux/Actions/index'
+import {onClickEditReducer,onFooterClick,onSync,onGetData} from '../../redux/Actions/index'
 
 
 class App extends React.Component {
@@ -18,6 +19,16 @@ class App extends React.Component {
       noteContent: '',
     };
   }
+
+
+
+  componentDidMount() {
+    axios.get('/getData').then((historyArr) => {
+      this.props.getData(historyArr);
+    });
+  }
+
+
 
   onChangeNote = (event) => {
     let alertBoolnew = false;
@@ -74,13 +85,13 @@ class App extends React.Component {
   
 
   render() {
-    const history = this.props.history.slice();
+    const history = this.props.history;
     const noteList = history.map((step, index) => (
       <li>
         <NoteDeck
-          noteDeckT={history[index].valueNoteTitle}
-          noteDeckN={history[index].valueNote}
-          indexSent={history[index].noteid}
+          noteDeckT={step.notetitle}
+          noteDeckN={step.notecontent}
+          indexSent={step.noteid}
           onClickEdit={i => this.onClickEdit(i)}
         />
       </li>
@@ -113,7 +124,7 @@ class App extends React.Component {
       <div className="AppPage2">
         <Header textHeader="Saved Notes" />
 
-        <button className="SyncBtn" onClick={()=>this.props.onSync()}>Sync</button>
+        <button className="SyncBtn" onClick={()=>this.props.onSyncHere()}>Sync</button>
         <ol className="Body2">{noteList}</ol>
         <Footer textFooter="Create new note" 
         onFooterClick={() => this.onFooterClick()} 
@@ -131,9 +142,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatcherToProps = dispatch => ({
-  onSync:()=>dispatch(onSync()),
+  onSyncHere:()=>dispatch(onSync()),
   onClickEditHere: key => dispatch(onClickEditReducer(key)),
   onFooterClickHere: () => dispatch(onFooterClick()),
+  getData:(historyArr)=>dispatch(onGetData(historyArr)),
 });
 export default connect(mapStateToProps, mapDispatcherToProps)(App);
 
