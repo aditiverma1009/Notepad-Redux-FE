@@ -13,17 +13,9 @@ const Body = props => (
     />
     <BodyMid
       textNoteHeading={props.textNoteHeading}
-      onChangeNoteTitle={event => props.onChangeNoteTitle(event)}
-      onChangeNote={event => props.onChangeNote(event)}
-      valueNoteTitle={props.valueNoteTitle}
-      valueNote={props.valueNote}
-      alertBool={props.alertBool}
     />
     <BodyFooter
-      valueNote={props.valueNote}
-      valueNoteTitle={props.valueNoteTitle}
       textSave={props.textSave}
-      onSaveEvent={() => props.onSaveEvent()}
       textCounter={props.textCounter}
     />
   </div>
@@ -35,15 +27,6 @@ Body.propTypes = {
   textNoteTitleHeading: PropTypes.string.isRequired,
   textButtonEn: PropTypes.string.isRequired,
   textNoteHeading: PropTypes.string.isRequired,
-
-  onChangeNoteTitle: PropTypes.func.isRequired,
-  valueNoteTitle: PropTypes.string.isRequired,
-
-  onChangeNote: PropTypes.func.isRequired,
-  valueNote: PropTypes.string.isRequired,
-  alertBool: PropTypes.bool.isRequired,
-
-  onSaveEvent: PropTypes.func.isRequired,
 };
 
 export default Body;

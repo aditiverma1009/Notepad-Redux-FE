@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { onClickEditReducer } from '../../redux/Actions/index';
 import React from 'react';
 import './Note-Deck.css';
 
@@ -27,4 +28,15 @@ NoteDeck.propTypes = {
   noteDeckN: PropTypes.string.isRequired,
 };
 
-export default connect(null, null)(NoteDeck);
+const mapStateToProps = state => ({
+  history: state.noteReducer.history,
+  page: state.noteReducer.page,
+  edit: state.noteReducer.edit,
+  noteid: state.noteReducer.noteid,
+});
+
+const mapDispatcherToProps = dispatch => ({
+  onClickEdit: key => dispatch(onClickEditReducer(key)),
+});
+
+export default connect(mapStateToProps, mapDispatcherToProps)(NoteDeck);

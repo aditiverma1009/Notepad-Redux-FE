@@ -16,6 +16,16 @@ export const onClickEditReducer = keyPayload => ({
   payload: keyPayload,
 });
 
+export const onChangeNote = eventvalue => ({
+  type: 'ON_CHANGE_NOTE',
+  payload: eventvalue,
+});
+
+export const onChangeNoteTitle = eventvalue => ({
+  type: 'ON_CHANGE_NOTE_TITLE',
+  payload: eventvalue,
+});
+
 export const onSaveEventReducer = notePayload => ({
   type: 'ON_SAVE_EVENT_REDUCER',
   payload: notePayload, // yet to setup

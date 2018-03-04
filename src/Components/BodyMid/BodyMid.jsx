@@ -7,27 +7,15 @@ import './Body-Mid.css';
 
 const BodyMid = props => (
   <div className="BodyMid">
-    <NoteTitle
-      onChangeNoteTitle={event => props.onChangeNoteTitle(event)}
-      valueNoteTitle={props.valueNoteTitle}
-    />
+    <NoteTitle />
     <NoteHeading textNoteHeading={props.textNoteHeading} />
-    <Note
-      onChangeNote={event => props.onChangeNote(event)}
-      valueNote={props.valueNote}
-      alertBool={props.alertBool}
-    />
+    <Note />
   </div>
 );
 
 
 BodyMid.propTypes = {
   textNoteHeading: PropTypes.string.isRequired,
-  onChangeNoteTitle: PropTypes.func.isRequired,
-  valueNoteTitle: PropTypes.string.isRequired,
-  onChangeNote: PropTypes.func.isRequired,
-  valueNote: PropTypes.string.isRequired,
-  alertBool: PropTypes.bool.isRequired,
 };
 
 

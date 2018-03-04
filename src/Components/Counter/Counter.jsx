@@ -1,20 +1,18 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 import './Counter.css';
 
-class Counter extends React.Component {
-  render() {
-    return (
-      <div className="Counter">
-        {this.props.textCounter} character
-      </div>
-    );
-  }
-}
+const Counter = props => (
+  <div className="Counter">
+    {props.leftChar} character
+  </div>
+);
 
 
-Counter.propTypes = {
-  textCounter: PropTypes.number.isRequired,
-};
+const mapStateToProps = state => ({
+  leftChar: state.noteReducer.leftChar,
+});
 
-export default Counter;
+export default connect(mapStateToProps, null)(Counter);
+
